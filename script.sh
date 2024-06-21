@@ -61,12 +61,59 @@ check_firewall() {
 }
 
 
+check_running_services() {
+    echo "Verificare servicii active"
+    systemctl list-units --type=service --state=running
+    echo "Servicii active verificate complet!"
+}
+
+check_users_and_groups() {
+    echo "Verificare utilizatori si grupuri"
+    echo "Utiliatori:"
+    cut -d: -f1 /etc/passwd
+    echo "Grupuri:"
+    cut -d: -f1 /etc/group
+    echo "Utilizatori si grupuri verificate complet!"
+}
+
+check_suid_sgid_files() {
+    echo "Verificare fisiere SUID/SGID"
+    find / -type f \( -perm -4000 -o -perm -2000 \) -exec ls -ld {} \;
+    echo "Fisiere SUID/SGID verificate complet!"
+}
+
+check_dns_config() {
+    echo "Verificare configuratii DNS"
+    cat /etc/resolv.conf
+    echo "Configuratii DNS verificate complet!"
+}
+
+check_backups() {
+    echo "Verificare backup-uri"
+    ls /var/backups
+    crontab -l | grep -i "backup"
+    echo "Backup verificat complet!"
+}
+
+check_tmp_files() {
+    echo "Verificare fisiere temporare"
+    sudo ls /tmp
+    sudo find /tmp -type f -atime +10 -delete
+    echo "Fisiere temporare verificate complet!"
+}
+
 main () {
     echo "Incepere verificari de securitate"
     check_executables_permissions
     check_running_processes
     check_package_versions
     check_firewall
+    check_running_services
+    check_users_and_groups
+    check_suid_sgid_files
+    check_dns_config
+    check_backups
+    check_tmp_files
 }
 
 main 

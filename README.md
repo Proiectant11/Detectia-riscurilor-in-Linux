@@ -8,3 +8,11 @@ Verificare securitatii va fi facuta urmarind urmatoarele aspecte:
 -verificare versiuni pachete
 -verificare sume de control
 -verificare configuratii firewall
+
+# 21.06.2024
+-verificarea servicii active
+-verificarea utilizatori si grupuri
+-verificarea fisierelor SUID/SGID
+-monitorizarea cautarilor DNS si a configuratiilor DNS
+-verificarea utilizarii si configurarii de backups
+-verificarea fisierelor temporare
