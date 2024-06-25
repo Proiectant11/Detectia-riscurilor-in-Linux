@@ -16,3 +16,9 @@ Verificare securitatii va fi facuta urmarind urmatoarele aspecte:
 -monitorizarea cautarilor DNS si a configuratiilor DNS
 -verificarea utilizarii si configurarii de backups
 -verificarea fisierelor temporare
+
+# 25.06.2024
+-verificarea permisiunilor fisierelor sensibile
+-verificarea actualizarilor de securitate
+-verificarea integritatii kernelului si a modurilor de kernel
+-monitorizarea porturilor deschise si conexiunilor de retea
