@@ -22,3 +22,9 @@ Verificare securitatii va fi facuta urmarind urmatoarele aspecte:
 -verificarea actualizarilor de securitate
 -verificarea integritatii kernelului si a modurilor de kernel
 -monitorizarea porturilor deschise si conexiunilor de retea
+
+# 26.06.2024
+Am realizat pentru fiecare verificare in parte cate un fisier de output, pentru a stoca toate informatiile obtinute in urma executarii verificarilor de securitate mentionate mai sus. Pe baza acestora, am ales anuite exceptii pentru a anunta utilizatorul ca in sisitemul lui au loc anumite probleme de securitate.
+    1.Verificarea sumei de control al fiisierului kernel, prin calcularea acesteia si compararea cu suma de referinta, obtinuta din documentatia oficiala a sistemului de operare (in cazul verificarilor mele, suma de referinta este una aleator aleasa)
+    2.Implementarea unor pachete "sensibile" si verificarea existentei acestora prin lista de pachete instalate; in cazul in care sunt gasite, utilizatorul este anuntat prin anumite mesaje de eroare
+    3.Este verificata starea firewall-ului prin UFW si iptables si sunt afisate mesaje corespunzatoare outputului primit
