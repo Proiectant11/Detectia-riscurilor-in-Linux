@@ -67,10 +67,10 @@ check_firewall() {
         ufw_status=$(sudo ufw status verbose)
         echo "Stare UFW: $ufw_status"
         if [[ $ufw_status == *"Stare: inactiv"* ]]; then
-            echo "Atenție: UFW este dezactivat. Activare recomandată pentru securitatea sistemului."
-            echo "Pentru a activa, rulați: sudo ufw enable"
+            echo "Atentie: UFW este dezactivat. Activare recomandata pentru securitatea sistemului."
+            echo "Pentru a activa, rulati: sudo ufw enable"
         else
-            echo "UFW este activ. Iată regulile curente:" > output_firewall.txt
+            echo "UFW este activ. Regulile curente:" > output_firewall.txt
             sudo ufw status numbered > output_firewall.txt
         fi
     fi
@@ -80,18 +80,17 @@ check_firewall() {
         echo "Reguli iptables:" > output_firewall.txt
         echo "$iptables_status" > output_firewall.txt
         if [[ -z "$iptables_status" ]]; then
-            echo "Atenție: Nu există reguli iptables definite. Configurare recomandată pentru securitatea sistemului."
-            echo "Pentru a adăuga reguli de bază, consultați documentația sau rulați: sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT"
+            echo "Atentie: Nu există reguli iptables definite."
         fi
     fi
 
     if ! command -v ufw &> /dev/null && ! command -v iptables &> /dev/null; then
-        echo "Nici un firewall cunoscut nu este instalat sau activat. Recomandare: Instalați și configurați un firewall pentru a proteja sistemul."
-        echo "Puteți instala UFW cu: sudo apt install ufw"
-        echo "Puteți instala firewalld cu: sudo apt install firewalld"
+        echo "Nici un firewall cunoscut nu este instalat sau activat."
+        echo "Puteti instala UFW cu: sudo apt install ufw"
+        echo "Puteti instala firewalld cu: sudo apt install firewalld"
     fi
 
-    echo "Verificarea firewall-ului a fost completată."
+    echo "Firewall verificat complet!"
 }
 
 
@@ -120,7 +119,7 @@ check_users_and_groups() {
 check_suid_sgid_files() {
     echo "Verificare fisiere SUID/SGID"
     > output_suid_sgid_files.txt
-    find / -type f \( -perm -4000 -o -perm -2000 \) -exec ls -ld {} \; >> output_suid_sgid_files.txt
+    find / -type f \( -perm -4000 -o -perm -2000 \) -exec ls -ld {} \; 2>/dev/null >> output_suid_sgid_files.txt
     echo "Fisiere SUID/SGID verificate complet!"
 }
 
@@ -153,12 +152,6 @@ check_sensitive_file_permissions() {
     echo "Permisiuni fisiere sensibile verificate complet!"
 }
 
-check_security_updates() {
-    echo "Verificare actualizari de securitate"
-    sudo apt update && sudo apt upgrade -s > output_security_updates.txt
-    echo "Actualizari de securitate verificate complet!"
-}
-
 check_kernel_integrity() {
     echo "Verificare integritate kernel"
     REFERENCE_CHECKSUM="a9b1c1e7f69b6e8dd13f49c4d8c1d5f9c85a78d8b59451e50c2e7e04f06e8e6e"
@@ -172,9 +165,9 @@ check_kernel_integrity() {
             echo "Integritatea kernelului este compromisa!"
         fi
     else
-        echo "Fișierul kernel nu a fost găsit." > output_kernel_checksum.txt
+        echo "Fisierul kernel nu a fost gasit." > output_kernel_checksum.txt
     fi
-    echo "Integritate kernel verificată complet!"
+    echo "Integritate kernel verificata complet!"
 }
 
 check_kernel_messages() {
@@ -184,9 +177,9 @@ check_kernel_messages() {
 }
 
 check_loaded_modules() {
-    echo "Verificare module kernel încărcate"
+    echo "Verificare module kernel incarcate"
     lsmod > output_loaded_modules.txt
-    echo "Module kernel încărcate verificate complet!"
+    echo "Module kernel incarcate verificate complet!"
 }
 
 check_module_checksums() {
@@ -197,11 +190,11 @@ check_module_checksums() {
 }
 
 check_module_info() {
-    echo "Verificare informații module kernel"
+    echo "Verificare informatii module kernel"
     for module in $(lsmod | awk '{print $1}' | tail -n +2); do
         modinfo "$module" > "output_modinfo_$module.txt"
     done
-    echo "Informații module kernel verificate complet!"
+    echo "Informatii module kernel verificate complet!"
 }
 
 check_kernel () {
@@ -215,36 +208,75 @@ check_kernel () {
 }
 
 monitor_open_ports() {
-    echo "Monitorizare porturi deschise"
+    echo "Verificare porturi deschise"
     sudo ss -tuln > output_open_ports.txt
-    echo "Porturi deschise monitorizate complet!"
+    echo "Porturi deschise verificate complet!"
 }
 
 monitor_network_connections() {
-    echo "Monitorizare conexiuni de rețea"
+    echo "Verificare conexiuni de retea"
     sudo ss -tuna   > output_network_connections.txt
-    echo "Conexiuni de rețea monitorizate complet!"
+    echo "Conexiuni de retea verificate complet!"
 }
 
 monitor_process_ports() {
-    echo "Monitorizare procese și porturi utilizate"
+    echo "Verificare procese si porturi utilizate"
     sudo ss -tulpn > output_process_ports.txt
-    echo "Procese și porturi monitorizate complet!"
+    echo "Procese si porturi verificate complet!"
 }
 
 scan_ports() {
-    echo "Scanare porturi deschise cu nmap"
-    nc -zv localhost 1-1024 > output_scan_ports.txt
-    echo "Scanare porturi cu nmap completă!"
+    echo "Scanare porturi deschise"
+    for port in {1..1024}; do
+        nc -zv localhost $port 2>&1 | grep -q "succeeded" && echo "Portul $port este deschis" >> output_scan_ports.txt
+    done
+    echo "Scanare porturi completa!"
+
 }
 
+check_active_ports() {
+    local port=$1
+    local protocol=$2
+    if grep -qE "${protocol}.*:${port} " output_open_ports.txt; then
+        return 0
+    else 
+        return 1
+    fi
+}
+
+restrict_protocols() {
+    echo "Aplicarea regulilor de restrictionare a protocoalelor"
+    ports_protocols=(
+        "80 tcp"
+        "53 udp"
+    )
+    > output_restrictii.txt
+    for aux in "${ports_protocols[@]}"; do
+        port=$(echo $aux | cut -d' ' -f1)
+        protocol=$(echo $aux | cut -d' ' -f2)
+        if check_active_ports $port $protocol; then
+            if [ "$protocol" == "tcp" ]; then
+                echo "Restrictionare protocol TCP pe portul $port" >> output_restrictii.txt
+                sudo iptables -A INPUT -p tcp --dport $port -j REJECT
+            elif [ "$protocol" == "udp" ]; then
+                echo "Restrictionare protocol UDP pe portul $port" >> output_restrictii.txt
+                sudo iptables -A INPUT -p udp --dport $port -j REJECT
+            fi
+        fi
+    done 
+    sudo iptables -L INPUT -v -n | grep "dpt:80" >> output_restrictii.txt
+    sudo iptables -L INPUT -v -n | grep "dpt:53" >> output_restrictii.txt
+    echo "Reguli de restrictionare a protocoalelor aplicate complet!"
+}               
+
 check_ports() {
-    echo "Incepere monitorizare de rețea"
+    echo "Incepere monitorizare de retea"
     monitor_open_ports
     monitor_network_connections
     monitor_process_ports
     scan_ports
     echo "Monitorizare de retea verifcata complet!"
+    restrict_protocols
 }
 
 main () {
@@ -260,7 +292,6 @@ main () {
     check_backups
     check_tmp_files
     check_sensitive_file_permissions
-    check_security_updates
     check_kernel
     check_ports
     echo "Verificarea securitatii finalizata!"

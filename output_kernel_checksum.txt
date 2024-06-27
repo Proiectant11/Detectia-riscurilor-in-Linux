@@ -1,0 +1,1 @@
+Suma de control pentru /boot/vmlinuz-5.15.0-107-generic: 7d0b49a58037be6ca789f7b7975ed30c2a6a5c8e42f68b537c54df513d343ba3

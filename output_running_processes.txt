@@ -1,0 +1,10 @@
+USER 42 %CPU %MEM COMMAND
+root 42 0.0 0.0 [kthreadd]
+root 42 0.0 0.0 [rcu_gp]
+root 42 0.0 0.0 [rcu_par_gp]
+root 42 0.0 0.0 [slub_flushwq]
+root 42 0.0 0.0 [netns]
+root 42 0.0 0.0 [kworker/0:0H-events_highpri]
+root 42 0.0 0.0 [mm_percpu_wq]
+root 42 0.0 0.0 [rcu_tasks_rude_]
+root 42 0.0 0.0 [rcu_tasks_trace]

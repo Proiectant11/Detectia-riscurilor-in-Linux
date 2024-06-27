@@ -1,0 +1,8 @@
+[    0.294716] tsc: Marking TSC unstable due to check_tsc_sync_source failed
+[    0.350716] acpi PNP0A03:00: fail to add MMCONFIG information, can't access extended PCI configuration space under this bridge.
+[    2.054707] RAS: Correctable Errors collector initialized.
+[    3.147011] [drm:vmw_host_printf [vmwgfx]] *ERROR* Failed to send host log message.
+[    5.956200] EXT4-fs (sda3): re-mounted. Opts: errors=remount-ro. Quota mode: none.
+[    6.628483] vboxguest: module verification failed: signature and/or required key missing - tainting kernel
+[   44.131938] csd-power[1505]: segfault at 8 ip 00007f15c853ab40 sp 00007fffc9b20830 error 4 in libupower-glib.so.3.1.0[7f15c852d000+13000]
+[   70.933080] csd-power[2028]: segfault at 8 ip 00007f3c5672eb40 sp 00007ffc43c686b0 error 4 in libupower-glib.so.3.1.0[7f3c56721000+13000]
