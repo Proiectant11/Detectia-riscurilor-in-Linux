@@ -1,7 +1,9 @@
 Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination         
-    4   240 REJECT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 reject-with icmp-port-unreachable
-15040 1075K REJECT     udp  --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:53 reject-with icmp-port-unreachable
+    5   300 REJECT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 reject-with icmp-port-unreachable
+16992 1217K REJECT     udp  --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:53 reject-with icmp-port-unreachable
+    0     0 REJECT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 reject-with icmp-port-unreachable
+    0     0 REJECT     udp  --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:53 reject-with icmp-port-unreachable
     0     0 REJECT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 reject-with icmp-port-unreachable
     0     0 REJECT     udp  --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:53 reject-with icmp-port-unreachable
     0     0 REJECT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 reject-with icmp-port-unreachable
